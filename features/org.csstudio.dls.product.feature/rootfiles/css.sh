@@ -57,6 +57,16 @@ function set_epics_env() {
     for key in "${!epics_env_vars[@]}"; do
         # eval to extract named variable
         eval env_value=\"\$"$key"\"
+
+        # CSS uses values true/false instead of YES/NO, so we must convert
+        if [[  "$key" == "EPICS_CA_AUTO_ADDR_LIST"  ]]; then
+            if [[ "$env_value" == "NO" ]]; then
+                env_value="false"
+            elif [[ "$env_value" == "YES" ]]; then
+                env_value="true"
+            fi
+        fi
+
         [ ${env_value:+unset} ] &&
             echo "$DIIRT_PREFS_PLUGIN/${epics_env_vars[$key]}=$env_value" >> $1
     done
