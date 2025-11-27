@@ -60,13 +60,13 @@ function set_epics_env() {
 
         # CSS uses values true/false instead of YES/NO, so we must convert
         if [[  "$key" == "EPICS_CA_AUTO_ADDR_LIST"  ]]; then
-            if [[ "$env_value" == "NO" ]]; then
-                env_value="false"
-            elif [[ "$env_value" == "YES" ]]; then
+            env_val_lower=${env_value,,}
+            if [[ "$env_val_lower" == "yes" ]] || [[ "$env_val_lower" == "true" ]]; then
                 env_value="true"
+            elif [[ "$env_val_lower" == "no" ]] || [[ "$env_val_lower" == "false" ]]; then
+                env_value="false"
             fi
         fi
-
         [ ${env_value:+unset} ] &&
             echo "$DIIRT_PREFS_PLUGIN/${epics_env_vars[$key]}=$env_value" >> $1
     done
