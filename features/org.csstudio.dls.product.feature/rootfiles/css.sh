@@ -82,6 +82,10 @@ dev=false
 opishell=false
 port=5064
 
+# force cs-studio to use XWayland on RHEL9+ machines
+# as XWayland is not compatible with cs-studio
+export GDK_BACKEND=x11
+
 while getopts "w:do:p:n:x:m:sl:c" opt; do
     case $opt in
         w)
